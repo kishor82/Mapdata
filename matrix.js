@@ -1,11 +1,15 @@
+"use strict";
+const fs = require("fs");
 let matrix = [];
 let nodes = [];
 let edges = [];
 let corners = [];
 let boundries = [];
 let middle = [];
+let elements = {};
 // size of matrix;
-const size = 100;
+console.log("mapdata.json  is generating.........");
+const size = 4;
 for (let i = 0; i < size; i++) {
   matrix[i] = new Array(size);
 }
@@ -204,8 +208,29 @@ for (let i = 0; i < matrix.length; i++) {
 
 for (let n in boundries) {
   let digits = ("" + boundries[n]).split("");
-  let i = +digits[0],
-    j = +digits[1];
+  let i, j;
+
+  // if Matrix Address is more then 2 digit we need to split it accordingly here , i added upto 6 digit address
+  if (digits.length === 6) {
+    i = +`${digits[0]}${digits[1]}${digits[2]}`;
+    j = +`${digits[3]}${digits[4]}${digits[5]}`;
+  }
+  if (digits.length === 5) {
+    i = +`${digits[0]}${digits[1]}${digits[2]}`;
+    j = +`${digits[3]}${digits[4]}`;
+  }
+  if (digits.length === 4) {
+    i = +`${digits[0]}${digits[1]}`;
+    j = +`${digits[2]}${digits[3]}`;
+  }
+  if (digits.length === 3) {
+    i = +`${digits[0]}${digits[1]}`;
+    j = +`${digits[2]}`;
+  }
+  if (digits.length === 2) {
+    i = +`${digits[0]}`;
+    j = +`${digits[1]}`;
+  }
   if (i === 0) {
     edges.push({
       data: {
@@ -357,11 +382,16 @@ for (let n in boundries) {
   }
 }
 
+elements = {
+  nodes,
+  edges
+};
+
+fs.writeFileSync("mapdata.json", JSON.stringify(elements));
+
+console.log("#################################################");
 console.log("Matrix size", matrix.length);
-// console.log(matrix);
-// console.log(corners);
-// console.log(boundries);
-console.log(middle);
-// console.log(edges);
 console.log("edges", edges.length);
 console.log("Nodes", nodes.length);
+console.log("#################################################");
+console.log("mapdata.json  is generated with above data");
