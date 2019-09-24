@@ -9,7 +9,7 @@ let middle = [];
 let elements = {};
 // size of matrix;
 console.log("mapdata.json  is generating.........");
-const size = 4;
+const size = 7;
 for (let i = 0; i < size; i++) {
   matrix[i] = new Array(size);
 }
